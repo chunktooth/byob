@@ -1,7 +1,4 @@
-// Update with your config settings.
-
 module.exports = {
-
   development: {
     client: 'pg',
     connection: 'postgres://localhost/maps',
@@ -13,7 +10,6 @@ module.exports = {
     },
     useNullAsDefault: true  
   }
-
 
   // production: {
   //   client: 'postgresql',
