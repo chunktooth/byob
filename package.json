@@ -5,9 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test mocha --exit"
+    "test": "NODE_ENV=test mocha --exit",
+    "lint": "./node_modules/eslint/bin/eslint.js ./eslintrc.js/ ./server.js/"
   },
-  "author": "",
+  "author": "Matt Walker & Om Saetehn",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
@@ -15,8 +16,12 @@
     "pg": "^7.4.3"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.3",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
     "mocha": "^5.1.1"
   }
 }
