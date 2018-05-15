@@ -34,6 +34,30 @@ app.get('/api/v1/pins', (req, res) => {
   });
 });
 
+app.get('/api/v1/maps/:id', (req, res) => {
+  const { id } = req.params;
+
+  database('maps').where('id', id).select()
+  .then(map => {
+    res.status(200).json(map)
+  })
+  .catch(error => {
+    res.status(404).json(error)
+  });
+});
+
+app.get('/api/v1/pins/:id', (req, res) => {
+  const { id } = req.params;
+
+  database('pins').where('id', id).select()
+  .then(pin => {
+    res.status(200).json(pin)
+  })
+  .catch(error => {
+    res.status(404).json(error)
+  });
+});
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on Port 3000`);
 });

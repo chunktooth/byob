@@ -21,9 +21,10 @@ describe('Testing endpoints', () => {
 
   describe('GET', () => {
     
-    it('should get all the maps', () => {
+    it('should get all the maps', (done) => {
       chai.request(app)
-      .get('/api/v1/maps', (req, res) => {
+      .get('/api/v1/maps')
+      .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.an('array');
@@ -36,19 +37,20 @@ describe('Testing endpoints', () => {
         res.body[0].should.have.property('updated_at');
         res.body[0].id.should.equal(1);
         res.body[0].region.should.equal('California');
-        res.body[0].center_lat.should.equal(36.78);
-        res.body[0].center_long.should.equal(-119.42);
+        res.body[0].center_lat.should.equal('36.78');
+        res.body[0].center_long.should.equal('-119.42');
       });
+      done();
     });
-  });
 
-    it('should get all the pins', () => {
+    it('should get all the pins', (done) => {
       chai.request(app)
-      .get('/api/v1/pins', (req, res) => {
+      .get('/api/v1/pins')
+      .end((err, res) => {
         res.should.have.status(200);
-        res.should.be.json();
+        res.should.be.json;
         res.body.should.be.an('array');
-        res.body.length.should.equal(4);
+        res.body.length.should.equal(107);
         res.body[0].should.have.property('id');
         res.body[0].should.have.property('name');
         res.body[0].should.have.property('latitude');
@@ -56,11 +58,18 @@ describe('Testing endpoints', () => {
         res.body[0].should.have.property('map_id');
         res.body[0].id.should.equal(1);
         res.body[0].name.should.equal('Santa Maria\'s');
-        res.body[0].latitude.should.equal(36.96);
-        res.body[0].longitude.should.equal(-121.99);
+        res.body[0].latitude.should.equal('36.96');
+        res.body[0].longitude.should.equal('-121.99');
         res.body[0].map_id.should.equal(1);
-      });
+      })
+      done();
     });
+
+    it('should get map by id', () => {
+      // chai.request(app)
+      // .get('/api/v1/maps/1')
+    })
+  });
   
   describe('POST', () => {
   
