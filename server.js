@@ -4,15 +4,54 @@ const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
+const secretKey = require('./secretKey.js');
+const jwt = require('jsonwebtoken');
 
 app.set('port', process.env.PORT || 3000);
+
+
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json())
+// app.use(checkAuth)
 
 app.locals.title = 'BYOB';
 
-app.get('/', (req, res) => {
-  res.status(200).json()
-});
+const checkAuth = (req, res, next) => {
+  const { token } = req.body;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, secretKey)
+      const isLegit = decoded.includes('@turing.io')
+      if (isLegit) {
+        next()
+      } else {
+        res.status(500).json({"Error": "Internal Server Error"})
+      }
+    } catch (error) {
+      res.status(404).json({"Error": "That Token is Incorrect"})
+    }
+  } else {
+    res.status(404).json({"Error": "Please enter your token"})
+  }
+}
+
+// app.get('/', (req, res) => {
+//   res.status(200).json()
+// });
+
+app.post('/api/v1/auth/', (req, res) => {
+  const { email } = req.body;
+  const isTuring = email.includes('turing.io')
+  if (isTuring) {
+    const token = jwt.sign(email, secretKey)
+    res.status(201).send(token)
+  } else {
+    res.status(422).send('Error: Not Authorized Email')
+  }
+})
 
 app.get('/api/v1/maps', (req, res) => {
   database('maps').select()
@@ -58,12 +97,11 @@ app.get('/api/v1/pins/:id', (req, res) => {
   });
 });
 
-app.post('/api/v1/maps/', (req, res) => {
-  const map = req.body;
+app.post('/api/v1/maps/', checkAuth, (req, res) => {
+  const { map } = req.body;
   if (map.region) {
     database('maps').insert(map, "id")
     .then( map => {
-
       res.status(201).json({ id: map[0] })
     })
     .catch(error => {
@@ -74,8 +112,8 @@ app.post('/api/v1/maps/', (req, res) => {
   }
 })
 
-app.post('/api/v1/pins/', (req, res) => {
-  const pin = req.body;
+app.post('/api/v1/pins/', checkAuth, (req, res) => {
+  const { pin } = req.body;
   if (pin.name) {
     database('pins').insert(pin, "id")
     .then( pin => {
@@ -104,6 +142,7 @@ app.put('/api/v1/maps/:id/', (req, res) => {
     res.status(422).send({ error: 'Missing Region' });
   }
 })
+
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on Port 3000`);
