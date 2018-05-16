@@ -98,7 +98,7 @@ app.get('/api/v1/pins/:id', (req, res) => {
 });
 
 app.post('/api/v1/maps/', checkAuth, (req, res) => {
-  const { map } = req.body;
+  const { map }  = req.body;
   if (map.region) {
     database('maps').insert(map, "id")
     .then( map => {
@@ -118,7 +118,6 @@ app.post('/api/v1/pins/', checkAuth, (req, res) => {
     database('pins').insert(pin, "id")
     .then( pin => {
       res.status(201).json({ id: pin[0] })
-
     }).catch( error => {
       res.status(500).json(error)
     })

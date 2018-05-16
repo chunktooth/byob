@@ -94,9 +94,12 @@ describe('Testing endpoints', () => {
     it('should post a new map', (done) => {
       chai.request(app)
       .post('/api/v1/maps/').send({
-        region: 'Big Wave Land',
-        center_lat: '666.999',
-        center_long: '555.666'
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        map: {
+          region: 'Big Wave Land',
+          center_lat: '666.999',
+          center_long: '555.666'
+        }
       })
       .end((err, res) => {
         res.should.have.status(201)
@@ -110,9 +113,12 @@ describe('Testing endpoints', () => {
     it('should post a new pin', (done) => {
       chai.request(app)
       .post('/api/v1/pins/').send({
-        name: 'The Gnarliest Wave, Brah',
-        latitude: '999.666',
-        longitude: '333.111'
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        pin: {
+          name: 'The Gnarliest Wave, Brah',
+          latitude: '999.666',
+          longitude: '333.111'
+        }
       })
       .end((err, res) => {
         res.should.have.status(201)
