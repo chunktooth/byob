@@ -39,7 +39,7 @@ app.get('/api/v1/maps/:id', (req, res) => {
 
   database('maps').where('id', id).select()
   .then(map => {
-    res.status(200).json(map)
+    res.status(200).json(map[0])
   })
   .catch(error => {
     res.status(404).json(error)
@@ -51,12 +51,43 @@ app.get('/api/v1/pins/:id', (req, res) => {
 
   database('pins').where('id', id).select()
   .then(pin => {
-    res.status(200).json(pin)
+    res.status(200).json(pin[0])
   })
   .catch(error => {
     res.status(404).json(error)
   });
 });
+
+app.post('/api/v1/maps/', (req, res) => {
+  const map = req.body;
+  if (map.region) {
+    database('maps').insert(map, "id")
+    .then( map => {
+
+      res.status(201).json({ id: map[0] })
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+  } else {
+    res.status(422).send({ error: 'Missing Data' })
+  }
+})
+
+app.post('/api/v1/pins/', (req, res) => {
+  const pin = req.body;
+  if (pin.name) {
+    database('pins').insert(pin, "id")
+    .then( map => {
+      res.status(201).json({ id: pin[0] })
+
+    }).catch( error => {
+      res.status(500).json(error)
+    })
+  } else {
+    res.status(422).send({ error: 'Missing Data'})
+  }
+})
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on Port 3000`);

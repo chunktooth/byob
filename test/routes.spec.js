@@ -65,14 +65,63 @@ describe('Testing endpoints', () => {
       done();
     });
 
-    it('should get map by id', () => {
-      // chai.request(app)
-      // .get('/api/v1/maps/1')
+    it('should get map by id', (done) => {
+      chai.request(app)
+      .get('/api/v1/maps/1')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.an('object');
+        res.body.should.have.property('id')
+      })
+      done()
+    })
+
+    it('should get pin by id', (done) => {
+      chai.request(app)
+      .get('/api/v1/pins/4')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.an('object');
+        res.body.should.have.property('id')
+      })
+      done()
     })
   });
   
   describe('POST', () => {
-  
+    it('should post a new map', (done) => {
+      chai.request(app)
+      .post('/api/v1/maps/').send({
+        region: 'Big Wave Land',
+        center_lat: '666.999',
+        center_long: '555.666'
+      })
+      .end((err, res) => {
+        res.should.have.status(201)
+        res.should.be.json
+        res.body.should.have.property('id')
+        res.body.id.should.equal(5)
+      })
+      done()
+    })
+
+    it('should post a new pin', (done) => {
+      chai.request(app)
+      .post('/api/v1/pins/').send({
+        name: 'The Gnarliest Wave, Brah',
+        latitude: '999.666',
+        longitude: '333.111'
+      })
+      .end((err, res) => {
+        res.should.have.status(201)
+        res.should.be.json
+        res.body.should.have.property('id')
+        res.body.id.should.equal(6)
+      })
+      done()
+    })
   });
 
   describe('PATCH', () => {
