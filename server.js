@@ -78,7 +78,7 @@ app.post('/api/v1/pins/', (req, res) => {
   const pin = req.body;
   if (pin.name) {
     database('pins').insert(pin, "id")
-    .then( map => {
+    .then( pin => {
       res.status(201).json({ id: pin[0] })
 
     }).catch( error => {
@@ -86,6 +86,25 @@ app.post('/api/v1/pins/', (req, res) => {
     })
   } else {
     res.status(422).send({ error: 'Missing Data'})
+  }
+})
+
+app.put('/api/v1/maps/:id/', (req, res) => {
+  // const { id } = req.params;
+  // const newRegion = req.body;
+  console.log(req.params)
+  console.log(req.body)
+
+  if(newRegion) {
+    database('maps').where('id', id).update({ region: newRegion })
+    .then(region => {
+      console.log(region)
+      res.status(202).json({ message: `Region ${region} has been updated` })
+    }).catch(error => {
+      res.status(500).json(error)
+    });
+  } else {
+    res.status(422).send({ error: 'Missing Region' });
   }
 })
 

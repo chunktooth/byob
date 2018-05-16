@@ -118,14 +118,26 @@ describe('Testing endpoints', () => {
         res.should.have.status(201)
         res.should.be.json
         res.body.should.have.property('id')
-        res.body.id.should.equal(6)
+        res.body.id.should.equal(108)
       })
       done()
     })
   });
 
   describe('PATCH', () => {
-  
+    it('should patch a region in map', (done) => {
+      chai.request(app)
+      .patch('/api/v1/maps/4/').send({
+        region: 'Hullabeluga'
+      })
+      .end((err, res) => {
+        res.should.have.status(202)
+        res.should.be.json
+        res.body.should.have.property('message')
+        res.body.message.should.equal('Region Hullabeluga has been updated')
+      })
+      done()
+    });
   });
 
   describe('DELETE', () => {
