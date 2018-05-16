@@ -124,18 +124,15 @@ describe('Testing endpoints', () => {
     })
   });
 
-  describe('PATCH', () => {
-    it.skip('should patch a region in map', (done) => {
+  describe('PUT', () => {
+    it('should patch a region in map', (done) => {
       chai.request(app)
-      .patch('/api/v1/maps/3/').send({
-        region: 'Hullabeluga'
-      })
+      .put('/api/v1/maps/3/')
+      .send({ region: 'Hullabeluga' })
       .end((err, res) => {
         res.should.have.status(200)
-        res.should.be.json
-        res.body.should.have.property('message')
-        res.body.message.should.equal('Region Hullabeluga has been updated')
-      done()
+        res.body.should.equal('Region updated.')
+        done()
       })
     });
   });

@@ -91,15 +91,12 @@ app.post('/api/v1/pins/', (req, res) => {
 
 app.put('/api/v1/maps/:id/', (req, res) => {
   const { id } = req.params;
-  const newRegion = req.body;
-  console.log(res)
-  console.log(req)
+  const { region } = req.body;
 
-  if(newRegion) {
-    database('maps').where('id', id).update({ region: newRegion })
+  if(region) {
+    database('maps').where('id', id).update({ region: region })
     .then(region => {
-      console.log(region)
-      res.status(200).json({ message: `Region ${region} has been updated` })
+      res.status(200).json('Region updated.')
     }).catch(error => {
       res.status(500).json(error)
     });
