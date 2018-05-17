@@ -165,8 +165,16 @@ describe('Testing endpoints', () => {
   });
 
   describe('DELETE', () => {
-  
+    it('should delete a pin with an id', (done) => {
+      chai.request(app)
+      .delete('/api/v1/pins/108')
+      .end((err, res) => {
+        res.should.have.status(202)
+        res.body.should.equal('Map deleted.')
+        done()
+      });
+    });
   });
 
-})
+});
 

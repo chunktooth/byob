@@ -159,6 +159,17 @@ app.put('/api/v1/pins/:id', checkAuth, (req, res) => {
   }
 });
 
+app.delete('/api/v1/pins/:id', (req, res) => {
+  const { id } = req.params;
+
+  database('pins').where('id', id).delete()
+  .then(pin => {
+    res.status(202).json('Map deleted.')
+  }).catch(error => {
+    res.status(500).json(error)
+  });
+});
+
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on Port 3000`);
