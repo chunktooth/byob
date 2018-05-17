@@ -49,13 +49,29 @@ app.post('/api/v1/auth/', (req, res) => {
 })
 
 app.get('/api/v1/maps', (req, res) => {
-  database('maps').select()
-  .then(map => {
-    res.status(200).json(map)
-  })
-  .catch(error => {
-    res.status(404).json(error)
-  });
+  var url = require('url');
+  const url_parts = url.parse(req.url, true)
+  var query = url_parts.query
+  
+  if (query) {
+    database('maps').where(query)
+      .then( map => {
+        res.status(200).json(map)
+      })
+      .catch( error => {
+        res.status(404).json(error)
+      })
+  } else {
+    database('maps').select()
+    .then(map => {
+      res.status(200).json(map)
+    })
+    .catch(error => {
+      res.status(404).json(error)
+    }); 
+  }
+
+
 });
 
 app.get('/api/v1/pins', (req, res) => {
@@ -91,6 +107,11 @@ app.get('/api/v1/pins/:id', (req, res) => {
     res.status(404).json(error)
   });
 });
+
+// app.get('/api/v1/maps/?region=', (req, res) => {
+//   const { region } = req.params
+//   // console.log(region)
+// })
 
 app.post('/api/v1/maps/', checkAuth, (req, res) => {
   const { map }  = req.body;
@@ -152,7 +173,6 @@ app.put('/api/v1/pins/:id', checkAuth, (req, res) => {
     res.status(422).send({ error: 'Missin Name'});
   }
 });
-
 
 app.delete('/api/v1/pins/:name', (req, res) => {
   const { name } = req.params;
