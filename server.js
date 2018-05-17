@@ -127,12 +127,12 @@ app.post('/api/v1/pins/', checkAuth, (req, res) => {
   }
 })
 
-app.put('/api/v1/maps/:id/', (req, res) => {
+app.put('/api/v1/maps/:id/', checkAuth, (req, res) => {
   const { id } = req.params;
-  const { region } = req.body;
+  const { map } = req.body;
 
-  if(region) {
-    database('maps').where('id', id).update({ region: region })
+  if(map.region) {
+    database('maps').where('id', id).update({ region: map.region })
     .then(region => {
       res.status(200).json('Region updated.')
     }).catch(error => {
@@ -142,6 +142,22 @@ app.put('/api/v1/maps/:id/', (req, res) => {
     res.status(422).send({ error: 'Missing Region' });
   }
 })
+
+app.put('/api/v1/pins/:id', checkAuth, (req, res) => {
+  const { id } = req.params;
+  const { pin } = req.body;
+
+  if(pin.name) {
+    database('pins').where('id', id).update({ name: pin.name })
+    .then(pin => {
+      res.status(200).json('Name updated.')
+    }).catch(error => {
+      res.status(500).json(error)
+    });
+  } else {
+    res.status(422).send({ error: 'Missin Name'});
+  }
+});
 
 
 app.listen(app.get('port'), () => {

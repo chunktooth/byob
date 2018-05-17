@@ -134,10 +134,31 @@ describe('Testing endpoints', () => {
     it('should patch a region in map', (done) => {
       chai.request(app)
       .put('/api/v1/maps/3/')
-      .send({ region: 'Hullabeluga' })
+      .send({ 
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        map: {
+          region: 'Hullabeluga' 
+        }
+      })
       .end((err, res) => {
         res.should.have.status(200)
         res.body.should.equal('Region updated.')
+        done()
+      })
+    });
+
+    it('should patch a name in pin', (done) => {
+      chai.request(app)
+      .put('/api/v1/pins/3/')
+      .send({ 
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        pin: {
+          name: 'Hill Billy' 
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.should.equal('Name updated.')
         done()
       })
     });
