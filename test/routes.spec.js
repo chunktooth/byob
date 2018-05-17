@@ -165,12 +165,12 @@ describe('Testing endpoints', () => {
   });
 
   describe('DELETE', () => {
-    it('should delete a map with an id', (done) => {
+    it('should delete a pin by name', (done) => {
       chai.request(app)
-      .delete('/api/v1/maps/10')
+      .delete('/api/v1/pins/Boat%20House')
       .end((err, res) => {
         res.should.have.status(202)
-        res.body.should.equal('Map deleted.')
+        res.body.should.equal('Pin deleted.')
         done()
       });
     });

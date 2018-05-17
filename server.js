@@ -7,9 +7,7 @@ const database = require('knex')(configuration);
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
 app.set('port', process.env.PORT || 3000);
-
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({
@@ -38,10 +36,6 @@ const checkAuth = (req, res, next) => {
     res.status(404).json({"Error": "Please enter your token"})
   }
 }
-
-// app.get('/', (req, res) => {
-//   res.status(200).json()
-// });
 
 app.post('/api/v1/auth/', (req, res) => {
   const { email } = req.body;
@@ -160,12 +154,11 @@ app.put('/api/v1/pins/:id', checkAuth, (req, res) => {
 });
 
 
-app.delete('/api/v1/maps/:id', (req, res) => {
-  const { id } = req.params;
-
-  database('maps').where('id', id).delete()
+app.delete('/api/v1/pins/:name', (req, res) => {
+  const { name } = req.params;
+  database('pins').where('name', name).delete()
   .then(map => {
-    res.status(202).json('Map deleted.')
+    res.status(202).json(`Pin deleted.`)
   }).catch(error => {
     res.status(500).json(error)
   });
@@ -179,7 +172,7 @@ app.delete('/api/v1/pins/:id', (req, res) => {
     res.status(202).json('Pin deleted.')
   }).catch(error => {
     res.status(500).json(error)
-  });
+  })
 });
 
 app.listen(app.get('port'), () => {
