@@ -153,7 +153,7 @@ describe('Testing endpoints', () => {
   });
 
   describe('PUT', () => {
-    it('should patch a region in map', (done) => {
+    it('should put a region in map', (done) => {
       chai.request(app)
       .put('/api/v1/maps/3/')
       .send({ 
@@ -169,7 +169,7 @@ describe('Testing endpoints', () => {
       })
     });
 
-    it('should patch a name in pin', (done) => {
+    it('should put a name in pin', (done) => {
       chai.request(app)
       .put('/api/v1/pins/3/')
       .send({ 

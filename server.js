@@ -52,7 +52,7 @@ app.get('/api/v1/maps', (req, res) => {
   var url = require('url');
   const url_parts = url.parse(req.url, true)
   var query = url_parts.query
-  
+
   if (query) {
     database('maps').where(query)
       .then( map => {
