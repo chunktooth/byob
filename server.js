@@ -4,8 +4,9 @@ const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
-const secretKey = require('./secretKey.js');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 
 app.set('port', process.env.PORT || 3000);
 
@@ -23,7 +24,7 @@ const checkAuth = (req, res, next) => {
   const { token } = req.body;
   if (token) {
     try {
-      const decoded = jwt.verify(token, secretKey)
+      const decoded = jwt.verify(token, process.env.JWT_PASS)
       const isLegit = decoded.includes('@turing.io')
       if (isLegit) {
         next()
@@ -46,7 +47,7 @@ app.post('/api/v1/auth/', (req, res) => {
   const { email } = req.body;
   const isTuring = email.includes('turing.io')
   if (isTuring) {
-    const token = jwt.sign(email, secretKey)
+    const token = jwt.sign(email, process.env.JWT_PASS)
     res.status(201).send(token)
   } else {
     res.status(422).send('Error: Not Authorized Email')
