@@ -85,16 +85,12 @@ describe('Testing endpoints', () => {
         res.should.be.json;
         res.body.should.be.an('array');
         res.body.length.should.equal(107);
-        res.body[0].should.have.property('id');
-        res.body[0].should.have.property('name');
-        res.body[0].should.have.property('latitude');
-        res.body[0].should.have.property('longitude');
-        res.body[0].should.have.property('map_id');
-        res.body[0].id.should.equal(1);
-        res.body[0].name.should.equal('Santa Maria\'s');
-        res.body[0].latitude.should.equal('36.96');
-        res.body[0].longitude.should.equal('-121.99');
-        res.body[0].map_id.should.equal(1);
+        res.body[5].should.have.property('id');
+        res.body[5].should.have.property('name');
+        res.body[5].should.have.property('latitude');
+        res.body[5].should.have.property('longitude');
+        res.body[5].should.have.property('map_id');
+        res.body[5].id.should.equal(1);
       done();
       })
     });
