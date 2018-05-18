@@ -43,40 +43,6 @@ describe('Testing endpoints', () => {
       });
     });
 
-    it.skip('should get a map based on a query string', (done) => {
-      chai.request(app)
-      .get('/api/v1/maps?region=California') 
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.json;
-        res.body.should.be.an('array');
-        res.body.length.should.equal(1);
-        res.body[0].should.have.property('id');
-        res.body[0].should.have.property('region');
-        res.body[0].should.have.property('center_lat');
-        res.body[0].should.have.property('center_long');
-        res.body[0].should.have.property('created_at');
-        res.body[0].should.have.property('updated_at');
-        res.body[0].id.should.equal(1);
-        res.body[0].region.should.equal('California');
-        res.body[0].center_lat.should.equal('36.78');
-        res.body[0].center_long.should.equal('-119.42');
-      done()
-      })
-    })
-
-    it.skip('should return an empty array if the region does not exist', (done) => {
-      chai.request(app)
-      .get('/api/v1/maps?region=Tahiti')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.json;
-        res.body.should.be.an('array');
-        res.body.length.should.deep.equal(0);        
-      done();
-      });
-    });
-
     it('should get all the pins', (done) => {
       chai.request(app)
       .get('/api/v1/pins')
@@ -127,16 +93,16 @@ describe('Testing endpoints', () => {
       done()
       })
     })
-  });
 
-  it('should throw a 404 if pin id does not exist', (done) => {
-    chai.request(app)
-    .get('/api/v1/pins/6000')
-    .end((err, res) => {
-      res.should.have.status(404);
-    done()
+    it('should throw a 404 if pin id does not exist', (done) => {
+      chai.request(app)
+      .get('/api/v1/pins/6000')
+      .end((err, res) => {
+        res.should.have.status(404);
+      done()
+      })
     })
-  })
+  });
   
   describe('POST', () => {
     it('should post a new map', (done) => {
@@ -275,7 +241,7 @@ describe('Testing endpoints', () => {
   describe('DELETE', () => {
     it('should delete a pin by name', (done) => {
       chai.request(app)
-      .delete('/api/v1/pins/Boat%20House')
+      .delete('/api/v1/pins/name/Boat%20House')
       .end((err, res) => {
         res.should.have.status(202)
         res.body.should.equal('Pin 1 deleted.')
@@ -285,19 +251,27 @@ describe('Testing endpoints', () => {
 
     it('should not delete a pin if the name is wrong', (done) => {
       chai.request(app)
-      .delete('/api/v1/pins/Swisher%20Sweet')
+      .delete('/api/v1/pins/name/Swisher%20Sweet')
       .end((err, res) => {
         res.should.have.status(404)
         done()
       });
     });
 
-    it.skip('should delete a pin with an id', (done) => {
+    it('should delete a pin with an id', (done) => {
       chai.request(app)
-      .delete('/api/v1/pins/10')
+      .delete('/api/v1/pins/id/18')
       .end((err, res) => {
         res.should.have.status(202)
-        res.body.should.equal(`Pin 0 deleted.`)
+        done()
+      });
+    });
+    
+    it('should not delete a pin if the name is wrong', (done) => {
+      chai.request(app)
+      .delete('/api/v1/pins/id/9000')
+      .end((err, res) => {
+        res.should.have.status(404)
         done()
       });
     });

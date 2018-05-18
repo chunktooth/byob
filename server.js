@@ -88,7 +88,7 @@ app.get('/api/v1/maps/:id', (req, res) => {
       if (map.length > 0) {
         res.status(200).json(map[0]);  
       } else {
-        res.status(404).json(error);
+        res.status(404).json('error');
       }
     })
     .catch(error => {
@@ -104,7 +104,7 @@ app.get('/api/v1/pins/:id', (req, res) => {
       if (pin.length > 0) {
         res.status(200).json(pin[0]); 
       } else {
-        res.status(404).json(error);
+        res.status(404).json('error');
       }
     })
     .catch(error => {
@@ -171,7 +171,7 @@ app.put('/api/v1/pins/:id', checkAuth, (req, res) => {
         if (pin > 0) {
           res.status(200).json(`Name ${pin} updated.`); 
         } else {
-          res.status(404).json(pin)
+          res.status(404).json(pin);
         }
       }).catch(error => {
         res.status(500).json(error);
@@ -181,26 +181,29 @@ app.put('/api/v1/pins/:id', checkAuth, (req, res) => {
   }
 });
 
-app.delete('/api/v1/pins/:name', (req, res) => {
+app.delete('/api/v1/pins/name/:name', (req, res) => {
   const { name } = req.params;
   database('pins').where('name', name).delete()
-    .then(map => {
-      if (map > 0) {
-        res.status(202).json(`Pin ${map} deleted.`); 
+    .then(pin => {
+      if (pin > 0) {
+        res.status(202).json(`Pin ${pin} deleted.`); 
       } else {
-        res.status(404).json(map)
+        res.status(404).json(pin);
       }
     }).catch(error => {
       res.status(500).json(error);
     });
 });
 
-app.delete('/api/v1/pins/:id', (req, res) => {
+app.delete('/api/v1/pins/id/:id', (req, res) => {
   const { id } = req.params;
-
   database('pins').where('id', id).delete()
     .then(pin => {
-      res.status(202).json(`Pin ${pin} deleted.`);
+      if (pin > 0) {
+        res.status(202).json(`Pin ${pin} deleted.`);  
+      } else {
+        res.status(404).json(pin);
+      }
     }).catch(error => {
       res.status(500).json(error);
     });
