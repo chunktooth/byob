@@ -2,7 +2,7 @@
 ##### By [Matt Walker](https://github.com/mttwlkr) & [Om Saetehn](https://github.com/chunktooth)
 
 ## Synopsis
-#### BYOB is the final paired project of Module 4 at Turing. We used Express with Knex to build a Node backend with a PostgresQL database. We created a primary table of maps with center latitude and center longitude coordinates and a secondary table of surf spots (pins) within the map area. We utilized Travis's Continuous Integration and the Mocha and Chai testing frameworks. 
+#### BYOB is the final paired project of Module 4 at Turing. We used Express with Knex to build a Node backend with a PostgreSQL database. We created a primary table of maps with center latitude and center longitude coordinates and a secondary table of surf spots (pins) within the map area. We utilized Travis's Continuous Integration and the Mocha and Chai testing frameworks. 
 
 ## Installation
 
