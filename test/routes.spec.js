@@ -45,10 +45,10 @@ describe('Testing endpoints', () => {
 
     it.skip('should get a map based on a query string', (done) => {
       chai.request(app)
-      .get('api/v1/maps?region=California')
+      .get('/api/v1/maps?region=California') 
       .end((err, res) => {
         res.should.have.status(200);
-        res.should.be.json;
+        res.body.should.be.json;
         res.body.should.be.an('array');
         res.body.length.should.equal(1);
         res.body[0].should.have.property('id');
@@ -64,6 +64,18 @@ describe('Testing endpoints', () => {
       done()
       })
     })
+
+    it.skip('should return an empty array if the region does not exist', (done) => {
+      chai.request(app)
+      .get('/api/v1/maps?region=Tahiti')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.json;
+        res.body.should.be.an('array');
+        res.body.length.should.deep.equal(0);        
+      done();
+      });
+    });
 
     it('should get all the pins', (done) => {
       chai.request(app)

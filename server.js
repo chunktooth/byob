@@ -38,8 +38,7 @@ const checkAuth = (req, res, next) => {
 
 app.post('/api/v1/auth/', (req, res) => {
   const { email } = req.body;
-  const isTuring = email.includes('turing.io');
-  if (isTuring) {
+  if (email) {
     const token = jwt.sign(email, process.env.JWT_PASS)
     res.status(201).json(token)
   } else {
