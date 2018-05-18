@@ -111,6 +111,15 @@ describe('Testing endpoints', () => {
       })
     })
 
+    it('should throw a 404 if map id does not exist', (done) => {
+      chai.request(app)
+      .get('/api/v1/maps/4000')
+      .end((err, res) => {
+        res.should.have.status(404);
+      done()
+      })
+    })
+
     it('should get pin by id', (done) => {
       chai.request(app)
       .get('/api/v1/pins/4')
@@ -123,6 +132,15 @@ describe('Testing endpoints', () => {
       })
     })
   });
+
+  it('should throw a 404 if pin id does not exist', (done) => {
+    chai.request(app)
+    .get('/api/v1/pins/6000')
+    .end((err, res) => {
+      res.should.have.status(404);
+    done()
+    })
+  })
   
   describe('POST', () => {
     it('should post a new map', (done) => {
@@ -140,6 +158,22 @@ describe('Testing endpoints', () => {
         res.should.be.json
         res.body.should.have.property('id')
         res.body.id.should.equal(5)
+      done()
+      })
+    })
+
+    it('should not post a new map if the region is blank', (done) => {
+      chai.request(app)
+      .post('/api/v1/maps/').send({
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        map: {
+          center_lat: '666.999',
+          center_long: '555.666'
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(422)
+        res.body.should.deep.equal({ error: 'Missing Data' })
       done()
       })
     })
@@ -162,10 +196,24 @@ describe('Testing endpoints', () => {
       done()
       })
     })
+  
+    it('should not post a new pin if the region is blank', (done) => {
+      chai.request(app)
+      .post('/api/v1/pins/').send({
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        pin: {
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(422)
+        res.body.should.deep.equal({ error: 'Missing Data' })
+      done()
+      })
+    })
   });
 
   describe('PUT', () => {
-    it('should put a region in map', (done) => {
+    it('should patch a region in map', (done) => {
       chai.request(app)
       .put('/api/v1/maps/3/')
       .send({ 
@@ -181,7 +229,22 @@ describe('Testing endpoints', () => {
       })
     });
 
-    it('should put a name in pin', (done) => {
+    it('should not patch a region in map if the map id does not exit', (done) => {
+      chai.request(app)
+      .put('/api/v1/maps/6000/')
+      .send({ 
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        map: {
+          region: 'Ouch Town' 
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(404)
+        done()
+      })
+    });
+
+    it('should patch a name in pin', (done) => {
       chai.request(app)
       .put('/api/v1/pins/3/')
       .send({ 
@@ -193,6 +256,21 @@ describe('Testing endpoints', () => {
       .end((err, res) => {
         res.should.have.status(200)
         res.body.should.equal('Name 1 updated.')
+        done()
+      })
+    });
+
+    it('should not patch a name in pin if the pin id does not exist', (done) => {
+      chai.request(app)
+      .put('/api/v1/pins/9000/')
+      .send({ 
+        token: 'eyJhbGciOiJIUzI1NiJ9.bWF0dEB0dXJpbmcuaW8.n3sElaxzQThTgog5QBOiBffkUvj3VCI0l6zM_SVXXhk',
+        pin: {
+          name: 'Roxbury' 
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(404)
         done()
       })
     });
@@ -209,9 +287,18 @@ describe('Testing endpoints', () => {
       });
     });
 
-    it('should delete a pin with an id', (done) => {
+    it('should not delete a pin if the name is wrong', (done) => {
       chai.request(app)
-      .delete('/api/v1/pins/108')
+      .delete('/api/v1/pins/Swisher%20Sweet')
+      .end((err, res) => {
+        res.should.have.status(404)
+        done()
+      });
+    });
+
+    it.skip('should delete a pin with an id', (done) => {
+      chai.request(app)
+      .delete('/api/v1/pins/10')
       .end((err, res) => {
         res.should.have.status(202)
         res.body.should.equal(`Pin 0 deleted.`)

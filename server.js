@@ -39,8 +39,8 @@ const checkAuth = (req, res, next) => {
 app.post('/api/v1/auth/', (req, res) => {
   const { email } = req.body;
   if (email) {
-    const token = jwt.sign(email, process.env.JWT_PASS)
-    res.status(201).json(token)
+    const token = jwt.sign(email, process.env.JWT_PASS);
+    res.status(201).json(token);
   } else {
     res.status(422).send('Error: Not Authorized Email');
   }
@@ -85,7 +85,11 @@ app.get('/api/v1/maps/:id', (req, res) => {
 
   database('maps').where('id', id).select()
     .then(map => {
-      res.status(200).json(map[0]);
+      if (map.length > 0) {
+        res.status(200).json(map[0]);  
+      } else {
+        res.status(404).json(error);
+      }
     })
     .catch(error => {
       res.status(404).json(error);
@@ -97,7 +101,11 @@ app.get('/api/v1/pins/:id', (req, res) => {
 
   database('pins').where('id', id).select()
     .then(pin => {
-      res.status(200).json(pin[0]);
+      if (pin.length > 0) {
+        res.status(200).json(pin[0]); 
+      } else {
+        res.status(404).json(error);
+      }
     })
     .catch(error => {
       res.status(404).json(error);
@@ -140,7 +148,11 @@ app.put('/api/v1/maps/:id/', checkAuth, (req, res) => {
   if (map.region) {
     database('maps').where('id', id).update({ region: map.region })
       .then(region => {
-        res.status(200).json(`Region ${region} updated.`);
+        if (region > 0) {
+          res.status(200).json(`Region ${region} updated.`);  
+        } else {
+          res.status(404).json(region);
+        }
       }).catch(error => {
         res.status(500).json(error);
       });
@@ -156,7 +168,11 @@ app.put('/api/v1/pins/:id', checkAuth, (req, res) => {
   if (pin.name) {
     database('pins').where('id', id).update({ name: pin.name })
       .then(pin => {
-        res.status(200).json(`Name ${pin} updated.`);
+        if (pin > 0) {
+          res.status(200).json(`Name ${pin} updated.`); 
+        } else {
+          res.status(404).json(pin)
+        }
       }).catch(error => {
         res.status(500).json(error);
       });
@@ -169,7 +185,11 @@ app.delete('/api/v1/pins/:name', (req, res) => {
   const { name } = req.params;
   database('pins').where('name', name).delete()
     .then(map => {
-      res.status(202).json(`Pin ${map} deleted.`);
+      if (map > 0) {
+        res.status(202).json(`Pin ${map} deleted.`); 
+      } else {
+        res.status(404).json(map)
+      }
     }).catch(error => {
       res.status(500).json(error);
     });
