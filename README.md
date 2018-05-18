@@ -15,8 +15,7 @@
 #### ```npm start```
 
 ## Tests
-
-#### This project was developed using using Mocha and Chai testing utilities. To run the test suites for this project:
+This project was developed using using Mocha and Chai testing utilities. To run the test suites for this project:
 
 ##### ```npm test```
 
@@ -61,7 +60,7 @@
 
 #### Get map by query string ```GET /api/v1/maps?<query>=<value>```
 Queries: ```region```, ```center_lat```, ```center_long```, ```id```
-#### (example)```GET /api/v1/maps?region=California```
+#### (Example)```GET /api/v1/maps?region=California```
 ##### Response 
 ```
 [
