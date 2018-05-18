@@ -1,5 +1,4 @@
 # BYOB (Build Yo Own Backend)
-[![Build Status](https://travis-ci.org/mttwlkr/byob.svg?branch=master)](https://travis-ci.org/mttwlkr/byob)
 ##### By [Matt Walker](https://github.com/mttwlkr) & [Om Saetehn](https://github.com/chunktooth)
 
 ## Synopsis
