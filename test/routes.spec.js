@@ -164,7 +164,7 @@ describe('Testing endpoints', () => {
       })
       .end((err, res) => {
         res.should.have.status(200)
-        res.body.should.equal('Region updated.')
+        res.body.should.equal('Region 1 updated.')
         done()
       })
     });
@@ -180,7 +180,7 @@ describe('Testing endpoints', () => {
       })
       .end((err, res) => {
         res.should.have.status(200)
-        res.body.should.equal('Name updated.')
+        res.body.should.equal('Name 1 updated.')
         done()
       })
     });
@@ -192,7 +192,7 @@ describe('Testing endpoints', () => {
       .delete('/api/v1/pins/Boat%20House')
       .end((err, res) => {
         res.should.have.status(202)
-        res.body.should.equal('Pin deleted.')
+        res.body.should.equal('Pin 1 deleted.')
         done()
       });
     });
@@ -202,11 +202,10 @@ describe('Testing endpoints', () => {
       .delete('/api/v1/pins/108')
       .end((err, res) => {
         res.should.have.status(202)
-        res.body.should.equal('Pin deleted.')
+        res.body.should.equal(`Pin 0 deleted.`)
         done()
       });
     });
   });
-
 });
 
