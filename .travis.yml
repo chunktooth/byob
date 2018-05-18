@@ -7,3 +7,9 @@ before_script:
 - psql -c 'create database maps_test;' -U postgres
 notifications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: 
+  app: travis-test-penguins
+  skip_cleanup: true
