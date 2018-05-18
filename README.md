@@ -118,7 +118,7 @@ Queries: ```region```, ```center_lat```, ```center_long```, ```id```
 
 ## Authenticate by email:
 User must have an authenticated token to PUT, POST or DELETE - user email MUST be ```@turing.io```
-Token is returned in the console
+Token is returned once a valid email is submitted
 
 #### Post new map ```POST /api/v1/maps```
 ##### BODY 
