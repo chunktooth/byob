@@ -9,10 +9,37 @@
       <link rel="apple-touch-icon" href="icon.png">
   </head>
   <body>
-    <form action="/api/v1/auth" method="post">
+    <h1>SURF MAPS</h1>
+    <form>
       <label for="email">Enter email: </label>
-      <input id="email" type="email" name="email">
-      <input type="submit" value="OK">
+      <input id="email" type="email">
+      <label for="appName">App name: </label>
+      <input id="appName" type="text">
+      <button class="ok">OK!</button>
     </form>
+    <textarea class="token"></textarea>
+
+    <script type="text/javascript">
+      var okBtn = document.querySelector('.ok');
+      var userEmail = document.querySelector('#email')
+
+      okBtn.addEventListener('click', getToken);
+
+      function getToken(e) {
+        e.preventDefault()
+        var userInput = userEmail.value
+
+        return fetch('/api/v1/auth/' , {
+          method: 'POST',
+          body: JSON.stringify({email: userInput}),
+          headers: {
+            'content-type': 'application/json'  
+          }
+        })
+        .then(res => res.json())
+        .then(token => document.querySelector('.token').innerText = token)
+        .catch(err => console.log(err));
+      }
+    </script>
   </body>
 </html>

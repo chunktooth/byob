@@ -41,7 +41,7 @@ app.post('/api/v1/auth/', (req, res) => {
   const isTuring = email.includes('turing.io')
   if (isTuring) {
     const token = jwt.sign(email, process.env.JWT_PASS)
-    res.status(201).send(`<h2>JWT Token: ${token}</h2>`)
+    res.status(201).json(token)
   } else {
     res.status(422).send('Error: Not Authorized Email')
   }
