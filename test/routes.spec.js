@@ -90,7 +90,7 @@ describe('Testing endpoints', () => {
         res.body[5].should.have.property('latitude');
         res.body[5].should.have.property('longitude');
         res.body[5].should.have.property('map_id');
-        res.body[5].id.should.equal(1);
+        res.body[5].id.should.equal(6);
       done();
       })
     });
